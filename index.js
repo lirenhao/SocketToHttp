@@ -10,14 +10,16 @@ const urls = config.get('urls');
 log4js.configure({
     disableClustering: true,
     appenders: {
-        out: {
+        file: {
             type: 'dateFile',
-            filename: 'logs/out.log'
+            filename: 'logs/out',
+            pattern: '.yyyy-MM-dd.log',
+            alwaysIncludePattern: true
         }
     },
     categories: {
         default: {
-            appenders: ['out'],
+            appenders: ['file'],
             level: config.get('logLevel')
         }
     }
