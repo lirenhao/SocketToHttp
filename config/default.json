@@ -1,0 +1,19 @@
+{
+    "host": "127.0.0.1",
+    "port": 1337,
+    "urls": {
+        "1001": "https://api.boc.dcorepay.com/alipay/pay",
+        "1003": "https://api.boc.dcorepay.com/alipay/cancelorder",
+        "1004": "https://api.boc.dcorepay.com/alipay/refund",
+        "1005": "https://api.boc.dcorepay.com/alipay/orderquery",
+        "1006": "https://api.boc.dcorepay.com/alipay/refundquery",
+        "1007": "https://api.boc.dcorepay.com/alipay/downloadbill",
+        "2001": "https://api.boc.dcorepay.com/pay/micropay",
+        "2003": "https://api.boc.dcorepay.com/pay/reverse",
+        "2004": "https://api.boc.dcorepay.com/pay/refund",
+        "2005": "https://api.boc.dcorepay.com/pay/orderquery",
+        "2006": "https://api.boc.dcorepay.com/pay/refundquery",
+        "2007": "https://api.boc.dcorepay.com/pay/downloadbill"
+    },
+    "logLevel": "info"
+}
