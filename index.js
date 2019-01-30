@@ -1,4 +1,5 @@
 const net = require('net');
+const https = require('https');
 const fetch = require('node-fetch');
 const config = require('config');
 const log4js = require('log4js');
@@ -40,11 +41,17 @@ function onClientConnected(sock) {
     sock.on('data', function (data) {
         logger.info('%s client is data: %s', remoteAddress, data);
         onClientData(data.toString())
-            .then(sock.write)
-            .catch(e => sock.write(pkgResp({
-                type: 'FFFF',
-                body: '请求失败'
-            })));
+            .then(data => {
+                logger.warn('socket response is: %s', data);
+                sock.write(data)
+            })
+            .catch(e => {
+                logger.warn('http send faild exception: %j', e);
+                sock.write(pkgResp({
+                    type: 'FFFF',
+                    body: '请求失败'
+                }))
+            });
     });
     sock.on('close', function () {
         logger.info('connection from %s closed', remoteAddress);
@@ -56,16 +63,19 @@ function onClientConnected(sock) {
 
 function onClientData(data) {
     const req = unpkgReq(data);
-    logger.info('http url is %s', req.url);
+    logger.info('http url is: %s, body is: %s', req.url, req.body);
     return fetch(req.url, {
             method: 'post',
             body: req.body,
             headers: {
                 'Content-Type': 'application/xml'
-            }
+            },
+            agent: new https.Agent({
+                rejectUnauthorized: false
+            }),
         })
         .then(async res => {
-            logger.info('http response is %s', res)
+            logger.info('http response is: %s->%s', res.status, res.statusText)
             if (res.status >= 200 && res.status < 300) {
                 return {
                     type: '0000',
