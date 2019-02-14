@@ -39,7 +39,7 @@ function onClientConnected(sock) {
     logger.info('new client connected: %s', remoteAddress);
 
     sock.on('data', function (data) {
-        logger.info('%s client is data: %s', remoteAddress, data);
+        logger.info('%s client is data: %s', remoteAddress, data.toString());
         onClientData(data.toString())
             .then(data => {
                 logger.warn('socket response is: %s', data);
@@ -104,10 +104,9 @@ function onClientData(data) {
 }
 
 const unpkgReq = data => ({
-    url: urls[data.substr(2, 4)],
-    type: data.substr(2, 4),
-    body: data.substr(6),
+    url: urls[data.substr(4, 4)],
+    type: data.substr(4, 4),
+    body: data.substr(8),
 })
 
-const pkgResp = resp => ((4 + resp.body.length) < 16 ? '0' : '') +
-    (4 + resp.body.length).toString(16) + resp.type + resp.body
+const pkgResp = resp => (4 + resp.body.length).toString(16).padStart(4, '0') + resp.type + resp.body

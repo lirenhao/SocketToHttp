@@ -5,7 +5,7 @@ const client = net.createConnection({
     host: '127.0.0.1'
 }, () => {
     console.log('connected to server!');
-    client.write('fa1001aaa');
+    client.write('00fa1001aaa');
 });
 
 client.on('data', (data) => {
