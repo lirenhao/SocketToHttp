@@ -3,6 +3,7 @@ const https = require('https');
 const fetch = require('node-fetch');
 const config = require('config');
 const log4js = require('log4js');
+const iconv = require('iconv-lite')
 
 const host = config.get('host');
 const port = config.get('port');
@@ -42,7 +43,7 @@ function onClientConnected(sock) {
         logger.info('%s client is data: %s', remoteAddress, data.toString());
         onClientData(data.toString())
             .then(data => {
-                logger.warn('socket response is: %s', data);
+                logger.info('socket response is: %s', data);
                 sock.write(data)
             })
             .catch(e => {
@@ -109,4 +110,4 @@ const unpkgReq = data => ({
     body: data.substr(8),
 })
 
-const pkgResp = resp => (4 + resp.body.length).toString(16).padStart(4, '0') + resp.type + resp.body
+const pkgResp = resp => (4 + iconv.encode(resp.body, 'utf8').length).toString(16).padStart(4, '0') + resp.type + resp.body

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.0.1",
+    "iconv-lite": "^0.4.24",
     "log4js": "^4.0.1",
     "node-fetch": "^2.3.0",
     "promise.prototype.finally": "^3.1.0"
